@@ -18,15 +18,14 @@ namespace mph_automotive_api.Models
         [Column(TypeName = "decimal(5,2)")]
         public decimal MarginPercentage { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        [Column(TypeName = "decimal(10,2)")]
-        public decimal UnitPrice => CostPrice * (1 + MarginPercentage / 100);
+        // ← Remove DatabaseGeneratedOption.Computed and compute here instead
+        [NotMapped]
+        public decimal UnitPrice => CostPrice / (1 - MarginPercentage / 100m);
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        [Column(TypeName = "decimal(10,2)")]
+        [NotMapped]
         public decimal RRP => UnitPrice * 1.20m;
 
         [ForeignKey("ProductId")]
-        public virtual Product Product { get; set; }
+        public virtual Product? Product { get; set; }
     }
 }

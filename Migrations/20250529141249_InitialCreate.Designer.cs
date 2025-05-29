@@ -12,7 +12,7 @@ using mph_automotive_api.Persistence;
 namespace mph_automotive_api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250529110326_InitialCreate")]
+    [Migration("20250529141249_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -54,19 +54,17 @@ namespace mph_automotive_api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProductCode")
@@ -74,20 +72,16 @@ namespace mph_automotive_api.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("StockQty")
+                    b.Property<int?>("StockQty")
                         .HasColumnType("int");
 
-                    b.Property<int>("SupplierId")
+                    b.Property<int?>("SupplierId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("SupplierId");
 
                     b.ToTable("Products");
                 });
@@ -145,15 +139,12 @@ namespace mph_automotive_api.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Address5")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EmailAddress")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PostCode")
@@ -172,7 +163,6 @@ namespace mph_automotive_api.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Website")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -180,49 +170,15 @@ namespace mph_automotive_api.Migrations
                     b.ToTable("Suppliers");
                 });
 
-            modelBuilder.Entity("mph_automotive_api.Models.Product", b =>
-                {
-                    b.HasOne("mph_automotive_api.Models.Category", "Category")
-                        .WithMany("Products")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("mph_automotive_api.Models.Supplier", "Supplier")
-                        .WithMany("Products")
-                        .HasForeignKey("SupplierId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
-
-                    b.Navigation("Supplier");
-                });
-
             modelBuilder.Entity("mph_automotive_api.Models.SellingPrice", b =>
                 {
                     b.HasOne("mph_automotive_api.Models.Product", "Product")
-                        .WithMany("SellingPrices")
+                        .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("mph_automotive_api.Models.Category", b =>
-                {
-                    b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("mph_automotive_api.Models.Product", b =>
-                {
-                    b.Navigation("SellingPrices");
-                });
-
-            modelBuilder.Entity("mph_automotive_api.Models.Supplier", b =>
-                {
-                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

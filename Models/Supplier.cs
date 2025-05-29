@@ -10,7 +10,7 @@ namespace mph_automotive_api.Models
         [Required, StringLength(5)]
         public string SupplierCode { get; set; }
 
-        [Required, StringLength(100)] 
+        [Required, StringLength(100)]
         public string SupplierName { get; set; }
 
         [Required, StringLength(255)]
@@ -25,17 +25,15 @@ namespace mph_automotive_api.Models
         [Required, StringLength(255)]
         public string Address4 { get; set; }
 
-        public string Address5 { get; set; }
+        public string? Address5 { get; set; }
 
         [Required, StringLength(15)]
         public string PostCode { get; set; }
 
-        public string Website { get; set; }
+        public string? Website { get; set; }
 
-        public string EmailAddress { get; set; }
+        public string? EmailAddress { get; set; }
 
-        public string PhoneNumber { get; set; }
-
-        public virtual ICollection<Product> Products { get; set; } = new List<Product>();
+        public string? PhoneNumber { get; set; }
     }
 }
