@@ -18,7 +18,7 @@ public class ProductsController(ApplicationDbContext dbContext) : ControllerBase
             .Select(p => new ProductWithPricesDto
             {
                 Product = p,
-                SellingPrices = dbContext.SellingPrices.Where(sp => sp.ProductId == p.Id).ToList()
+                SellingPrice = dbContext.SellingPrices.SingleOrDefault(sp => sp.ProductId == p.Id)!
             })
             .ToListAsync();
 
