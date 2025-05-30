@@ -21,6 +21,8 @@ namespace mph_automotive_api.Models
 
         public string? ImageUrl { get; set; }
 
+        public bool IsPopular { get; set; }
+
         public DateTime CreatedAt { get; set; }
 
         public DateTime? UpdatedAt { get; set; }

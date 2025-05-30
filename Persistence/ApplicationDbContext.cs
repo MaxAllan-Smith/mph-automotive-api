@@ -9,5 +9,6 @@ namespace mph_automotive_api.Persistence
         public DbSet<Category> Categories { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<SellingPrice> SellingPrices { get; set; }
+        public DbSet<User> Users { get; set; }
     };
 }

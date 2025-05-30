@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using mph_automotive_api.Models;
+using mph_automotive_api.Models.DTOs;
 using mph_automotive_api.Persistence;
 
 namespace mph_automotive_api.Controllers;
@@ -11,9 +12,17 @@ namespace mph_automotive_api.Controllers;
 public class ProductsController(ApplicationDbContext dbContext) : ControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+    public async Task<ActionResult<IEnumerable<ProductWithPricesDto>>> GetProducts()
     {
-        return await dbContext.Products.ToListAsync();
+        var result = await dbContext.Products
+            .Select(p => new ProductWithPricesDto
+            {
+                Product = p,
+                SellingPrices = dbContext.SellingPrices.Where(sp => sp.ProductId == p.Id).ToList()
+            })
+            .ToListAsync();
+
+        return Ok(result);
     }
 
     [HttpGet("{id}")]

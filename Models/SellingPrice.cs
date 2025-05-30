@@ -24,8 +24,5 @@ namespace mph_automotive_api.Models
 
         [NotMapped]
         public decimal RRP => UnitPrice * 1.20m;
-
-        [ForeignKey("ProductId")]
-        public virtual Product? Product { get; set; }
     }
 }
