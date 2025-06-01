@@ -26,16 +26,25 @@ public class ProductsController(ApplicationDbContext dbContext) : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Product>> GetProductById(int id)
+    public async Task<ActionResult<ProductWithPricesDto>> GetProductById(int id)
     {
-        var product = await dbContext.Products.SingleOrDefaultAsync(p => p.Id == id);
+        // Filter the Products table by the provided id, then project into the DTO
+        var result = await dbContext.Products
+            .Where(p => p.Id == id)
+            .Select(p => new ProductWithPricesDto
+            {
+                Product = p,
+                SellingPrice = dbContext.SellingPrices
+                    .SingleOrDefault(sp => sp.ProductId == p.Id)!
+            })
+            .SingleOrDefaultAsync();
 
-        if (product is null)
+        if (result == null)
         {
             return NotFound();
         }
 
-        return product;
+        return Ok(result);
     }
 
     [HttpPost]
